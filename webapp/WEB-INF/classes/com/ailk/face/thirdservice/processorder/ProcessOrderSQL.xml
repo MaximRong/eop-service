@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ProcessOrder">
+    <typeAlias alias="HashMap" type="java.util.HashMap" />
+
+    <!-- 根据第三方订单号查询商城订单号 -->
+    <select id="queryOrderId" parameterClass="HashMap" resultClass="string">
+    <![CDATA[
+    SELECT T.ORDER_ID FROM TF_B_ORDER_THIRDREF T WHERE T.THIRD_ORDER_ID = #SubscribeNo#
+    ]]>
+    </select>
+
+    <!-- 查询证件号码,类型,地址信息 -->
+    <select id="queryPsptInfo" parameterClass="HashMap" resultClass="HashMap">
+    <![CDATA[
+    SELECT   T.PSPT_NO "CertNum",
+             T.PSPT_TYPE_CODE "CertType",
+             T.PSPT_ADDR "CertAdress", 
+             T.CUST_NAME "CustomerName",
+             TO_CHAR(T.PSPT_EXPIRE_DATE,'yyyyMMdd') "CertExpireDate",
+             T.USER_TAG "UserType"
+      FROM   TF_B_ORDER_NETIN T
+     WHERE   T.ORDER_ID = #OrderId#
+    ]]>
+    </select>
+
+    <!-- 查询商品实例号, 应付总金额, 实付总金额 -->
+    <select id="queryGoodInsInfo" parameterClass="HashMap" resultClass="HashMap">
+    <![CDATA[
+    SELECT  T.GOODS_INST_ID, 
+            T.AMOUNT_RECEVABLE "IncomeMoney",
+            T.AMOUNT_RECEIVED "RealFee"
+      FROM  TF_B_ORDER_GOODSINS T
+     WHERE  T.ORDER_ID = #OrderId#
+    ]]>
+    </select>
+
+    <!-- 查询订单商品属性值表对应ESS属性 如:首月付费方式、号码、付费类型、业务类型 -->
+    <select id="queryEopAttrValInfo" parameterClass="HashMap" resultClass="HashMap">
+    <![CDATA[
+    SELECT  T.EOP_ATTR_CODE "AttrCode",
+            T.EOP_ATTR_VAL_CODE "AttrValCode"
+      FROM  TF_B_ORDER_GOODSINS_ATVAL T
+     WHERE  T.ORDER_ID = #OrderId#
+    ]]>
+        <iterate open=" AND T.ATTR_CODE IN ( " close=" ) " conjunction="," property="attrCodes">
+            #attrCodes[]#
+    </iterate>
+    </select>
+
+    <!-- 查询产品ID、活动ID -->
+    <select id="queryPrdAndActId" parameterClass="HashMap" resultClass="HashMap">
+    <![CDATA[
+    SELECT (SELECT ATTR_VAL_CODE
+              FROM TF_B_ORDER_GOODSINS_ATVAL
+             WHERE ORDER_ID = #OrderId#
+               AND ATTR_CODE = 'A000023') "ProductID",
+           (SELECT ATTR_VAL_CODE
+              FROM TF_B_ORDER_GOODSINS_ATVAL
+             WHERE ORDER_ID = #OrderId#
+               AND ATTR_CODE = 'A000024') "ActPlanID"
+     FROM DUAL
+    ]]>
+    </select>
+
+    <!-- 查询费用信息 -->
+    <select id="queryFeesInfo" parameterClass="HashMap" resultClass="HashMap">
+    <![CDATA[
+    SELECT  T.FEE_TYPE_CODE,
+            T.FEE
+     FROM   TF_B_ORDER_FEE T 
+     WHERE  T.ORDER_ID=#OrderId#
+    ]]>
+    </select>
+
+    <!-- 订单补录sim卡号,更新订单商品属性值表 -->
+    <update id="addSimCode" parameterClass="HashMap">
+        <![CDATA[
+            UPDATE TF_B_ORDER_GOODSINS_ATVAL
+               SET ATTR_VAL_CODE = #SimID#,
+                   ATTR_VAL_NAME = #SimID#,
+                   EOP_ATTR_CODE = 'SimID',
+                   EOP_ATTR_VAL_CODE = #SimID#
+             WHERE ORDER_ID = #OrderId#
+               AND ATTR_CODE = 'A000007'
+        ]]>
+    </update>
+
+    <!-- 订单补录终端串号,更新订单商品属性值表 -->
+    <update id="addImeiCode" parameterClass="HashMap">
+        <![CDATA[
+            UPDATE TF_B_ORDER_GOODSINS_ATVAL
+               SET ATTR_VAL_CODE = #ResourcesCode#,
+                   ATTR_VAL_NAME = #ResourcesCode#,
+                   EOP_ATTR_CODE = 'ResourcesCode',
+                   EOP_ATTR_VAL_CODE = #ResourcesCode#
+             WHERE ORDER_ID = #OrderId#
+               AND ATTR_CODE = 'A000019'
+        ]]>
+    </update>
+
+    <!-- 更新订单入网资料表信息 -->
+    <update id="addOrderNetin" parameterClass="HashMap">
+    <![CDATA[
+    UPDATE TF_B_ORDER_NETIN
+       SET ICCID         = #SimID#,
+           IMSI          = #IMSI#,
+           CARD_DATA     = #CardData#,
+           CARD_TYPE     = #CardType#,
+           ACTIVE_ID     = #CardDataProcID#,
+           PROV_ORDER_ID = #ProvOrderID#,
+           ACCOUNT_FLAG  = '1',
+           RECEIPT_CODE  = #AcceptanceTp#,
+           RECEIPT_MODE  = #AcceptanceMode#,
+           RECEIPT_FORM  = #AcceptanceForm#
+     WHERE ORDER_ID = #OrderId#
+       AND GOODS_INST_ID = #GOODS_INST_ID#
+    ]]>
+    </update>
+
+
+</sqlMap>

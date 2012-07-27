@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+    <bean id="eopServiceImpl" class="org.phw.service.EopService" />
+    <bean name="/eopService" class="org.springframework.remoting.caucho.HessianServiceExporter">
+        <property name="service" ref="eopServiceImpl" />
+        <property name="serviceInterface" value="org.phw.service.EopServiceRemote" />
+    </bean>
+</beans>

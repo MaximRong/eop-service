@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ChangeOrder">
+    <typeAlias alias="HashMap" type="java.util.HashMap" />
+
+    <select id="checkOrderCurrentState" parameterClass="HashMap" resultClass="HashMap">
+    <![CDATA[
+        SELECT A.ORDER_ID "OrderId"
+        FROM   TF_B_ORDER A, TF_B_ORDER_THIRDREF R
+        WHERE  A.ORDER_ID = R.ORDER_ID
+        AND    A.PARTITION_ID = R.PARTITION_ID
+        AND    R.THIRD_ORDER_ID = #SubscribeNo#
+        AND    R.THIRD_CODE = #SysCode# 
+        AND    A.ORDER_STATE = #OrderState#
+    ]]>
+    </select>
+
+    <select id="checkOrderStateChange" parameterClass="HashMap" resultClass="HashMap">
+    <![CDATA[
+        SELECT S.OLD_PAY_STATE "OldPayState", S.NEW_PAY_STATE "NewPayState"
+        FROM   TD_B_THIRD_ORDERSTATE S
+        WHERE  S.THIRD_CODE = #SysCode#
+        AND    S.OLD_ORDER_STATE = #OldState#
+        AND    S.NEW_ORDER_STATE = #NewState#
+    ]]>
+    </select>
+
+    <select id="getGoodsTmplId" parameterClass="HashMap" resultClass="HashMap">
+    <![CDATA[
+        SELECT G.TMPL_ID "TmplId"
+        FROM   TF_B_ORDER_GOODSINS R, TF_G_GOODS G
+        WHERE  R.ORDER_ID = #OrderId#
+        AND    R.PARTITION_ID = MOD(#OrderId# ,100)
+        AND    R.GOODS_ID = G.GOODS_ID
+    ]]>
+    </select>
+
+    <update id="changeOrderState" parameterClass="HashMap">
+    <![CDATA[
+        UPDATE TF_B_ORDER A
+        SET    A.ORDER_STATE = #NewState#
+    ]]>
+    <isNotEmpty property="NewPayState">
+    <![CDATA[
+               ,A.PAY_STATE = #NewPayState#
+    ]]>
+    </isNotEmpty>
+    <![CDATA[
+        WHERE  A.ORDER_ID = #OrderId#
+        AND    A.PARTITION_ID = MOD(#OrderId#, 100)
+        AND    A.ORDER_STATE = #OldState#
+    ]]>
+    <isNotEmpty property="OldPayState">
+    <![CDATA[
+        AND    A.PAY_STATE = #OldPayState#
+    ]]>
+    </isNotEmpty>
+    </update>
+
+    <insert id="recordOrderDeal" parameterClass="HashMap">
+    <![CDATA[
+        INSERT INTO TL_B_ORDER_DEAL
+            ( DEAL_LOGID, ORDER_ID, PARTITION_ID, OPERATE_TIME, OPERATOR_ID, OPERATOR_NAME, 
+              DEAL_CONTENT, RESULT_CODE, RESULT_INFO, ORIGINAL_STATE, CURRENT_STATE, SHOW_FLAG)
+        VALUES
+            ( F_SYS_GETSEQID('SEQ_ORDERLOG_ID'), #OrderId#, MOD(#OrderId#, 100), SYSDATE, NULL, NULL,
+              '第三方订单状态变更', '1', '成功'， #OldState#, #NewState#, '1')
+    ]]>
+    </insert>
+
+</sqlMap>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UniBSS> 
+  <_include src="com/ailk/face/common/HeaderRspInclude.xml"/>
+  <SvcCont cdata="true" mappedOut="true">
+    <CheckNumRsp mappedOut="true">
+      <RespCode length="F4"/>
+      <ResourcesRsp constraint="+">
+          <ResourcesType length="F2" range="03"/>
+          <ResourcesCode length="V30"/>
+          <RscStateCode length="F4"/>
+          <RscStateDesc length="V100"/>
+          <NumID length="V20"/>
+          <NumMemo length="V200" constraint="?"/>
+          <NumPreFee length="V20" constraint="?"/>
+          <NumLevel length="V10" constraint="?"/>
+          <NumProduct length="V20" constraint="?"/>
+          <NumRelNum length="V20" constraint="?"/>
+      </ResourcesRsp>
+      <_include src="com/ailk/face/common/include/ParaInfo.xml"/>
+    </CheckNumRsp>
+  </SvcCont>
+</UniBSS>

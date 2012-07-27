@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="SubmitOrder">
+    <typeAlias alias="HashMap" type="java.util.HashMap" />
+
+    <select id="queryGoodsBaseInfo" parameterClass="HashMap" resultClass="HashMap">
+    <![CDATA[
+        SELECT G.GOODS_ID, G.GOODS_NAME "GoodsName", G.TMPL_ID "TmplId", G.MERCHANT_ID "MerchantId"
+        FROM   TF_G_GOODS G
+        WHERE  G.GOODS_ID = #GoodsId#
+    ]]>
+        <isNotEmpty property="GOODS_STATE">
+    <![CDATA[
+        AND    G.GOODS_STATE = #GoodsState#
+    ]]>
+        </isNotEmpty>
+    </select>
+
+    <select id="queryMerchantInfo" parameterClass="HashMap" resultClass="HashMap">
+    <![CDATA[
+        SELECT M.MERCHANT_ID, M.MERCHANT_CODE
+        FROM   TF_F_MERCHANT M
+        WHERE  M.MERCHANT_ID = #MerchantId#
+        AND    M.MERCHANT_CODE = #MerchantCode#
+    ]]>
+    </select>
+
+    <!-- 查询产品信息 -->
+    <select id="queryProdInfo" parameterClass="HashMap" resultClass="HashMap">
+    <![CDATA[
+    SELECT T.PRODUCT_TYPE "BillType",
+           T.PRODUCT_VALUE "ProdBill"
+      FROM TD_P_PRODUCT T
+     WHERE T.PRODUCT_ID = #ProductId#
+    ]]>
+    </select>
+
+
+
+    <!-- 查询商品属性值 -->
+    <select id="queryGoodsAttrVal" parameterClass="HashMap" resultClass="HashMap">
+    <![CDATA[
+        SELECT T.GOODS_ID,
+               T.ACTIVITY_ID,
+               T.PRODUCT_ID,
+               T.PRODUCT_TYPE,
+               T.PRODUCT_VALUE,
+               T.ACTIVITY_TYPE,
+               T.ACTIVITY_TYPE_DESC,
+               T.BRAND_CODE,
+               T.MODEL_CODE,
+               T.COLOR_CODE,
+               T.PRICE,
+               NVL(TG.ATTR_VAL_CODE, 0) USIM
+          FROM TF_G_CONTRACT_PRICE T 
+               LEFT JOIN TF_G_GOODS_ATTRVAL TG
+               ON T.GOODS_ID = TG.GOODS_ID
+               AND TG.ATTR_CODE = 'A000022'
+         WHERE T.GOODS_ID = #GoodsId#
+     ]]>
+    </select>
+
+    <!-- 查询订单信息 -->
+    <select id="queryOrderInfo" parameterClass="HashMap" resultClass="String">
+    <![CDATA[
+    SELECT T.ORDER_ID
+      FROM TF_B_ORDER_THIRDREF T
+     WHERE T.THIRD_ORDER_ID = #SubscribeNo#
+       AND T.THIRD_CODE = #SysCode#
+     ]]>
+    </select>
+
+    <!-- 添加订单 -->
+    <insert id="insertOrder" parameterClass="HashMap">
+    <![CDATA[
+    INSERT INTO TF_B_ORDER(
+        ORDER_ID, PARTITION_ID, ORDER_NO, CREATE_TIME, CUST_ID, ORDER_TIME, 
+        ORIGINAL_PRICE, COUPON_MONEY, TOPAY_MONEY, INCOME_MONEY, ORDER_STATE, PAY_TYPE, REFERRER_NAME, REFERRER_PHONE,
+        POST_TAG, POST_FEE, POST_REMARK, CANCEL_TAG  , MERCHANT_ID, DELIVER_TYPE_CODE, DELIVER_DATE_TYPE, 
+        INVOCE_TITLE, INVO_CONT_CODE, NEED_AFFIRM, PAY_STATE, PAY_WAY,
+        PROVINCE_CODE, CITY_CODE, DISTRICT_CODE, DELAY_TIME,RELEASE_TIME,ORDER_FROM)
+    SELECT
+        #OrderId#, MOD(#OrderId#,100), #OrderNo#, sysdate, '0', sysdate, 
+        #OriginalPrice#, #CouponMoney#, #TopayMoney#, #IncomeMoney#, #OrderState#, #PayType#, NULL, NULL,
+        #PostTag#, #PostFee#, #PostRemark#, '0', #MerchantId#, #DelvType#, #DelvDateType#,
+        #InvoTitle#, #InvoCont#, #AffirmTag#, #PayState#, #PayWay#,
+        T.PROVINCE_CODE, NVL(#City#,T.CITY_CODE), NULL,SYSDATE, (TRUNC(SYSDATE + 1) + 22 / 24), #SysCode#
+    FROM TF_F_MERCHANT T WHERE T.MERCHANT_ID = #MerchantId#
+    ]]>
+    </insert>
+
+    <!-- 订单客户信息存放用于开户的客户资料 -->
+    <insert id="insertOrderNetin" parameterClass="HashMap">
+    <![CDATA[
+    INSERT INTO TF_B_ORDER_NETIN(
+        ORDER_ID, PARTITION_ID, GOODS_INST_ID, GOODS_ID, CUST_NAME, 
+        PSPT_TYPE_CODE, PSPT_NO, PSPT_ADDR, ACCOUNT_FLAG, NUM_PROC_ID, 
+        NUM_EXPIRE_TIME,USER_TAG,PRO_KEY_MODE,PRE_NUM,NUM_EXPIRE_TYPE)
+    VALUES (
+        #OrderId# ,MOD(#OrderId# ,100), #GoodsInstId#, #GoodsId#, #NetCustName#, 
+        #NetPsptType#, #NetPsptNo#, #NetPsptAdress#, '0', #OrderId#,
+        TO_DATE(#OccupiedTime#, 'YYYYMMDDHH24MISS'),#NetPhoneNoType#,#ProKeyMode#,#NetPhoneNo#,#OccupiedType#)
+    ]]>
+    </insert>
+
+    <!-- 订单邮寄信息表 -->
+    <insert id="insertOrderPost" parameterClass="HashMap">
+    <![CDATA[
+    INSERT INTO TF_B_ORDER_POST(
+        ORDER_ID, PARTITION_ID, RECEIVER_NAME, RECEIVER_PSPT_TYPE, RECEIVER_PSPT_NO, MOBILE_PHONE,FIX_PHONE,
+        EMAIL, PROVINCE_CODE, CITY_CODE, DISTRICT_CODE, POST_CODE, POST_ADDR)
+    VALUES(
+        #OrderId#, MOD(#OrderId#,100), #RecvCustName#, #RecvPsptType#, #RecvPsptNo#, #RecvLinkPhone#,#RecvFixPhone#,
+        #RecvEmail#, #PostProvince#, #PostCity#, #PostDistrict#, #PostCode#, #PostAddr#)
+    ]]>
+    </insert>
+
+    <!-- 订单商品实例表 -->
+    <insert id="insertOrderGoodsins" parameterClass="HashMap">
+    <![CDATA[
+    INSERT INTO TF_B_ORDER_GOODSINS(
+        ORDER_ID, PARTITION_ID, GOODS_ID, GOODS_INST_ID, GOODS_NAME, AMOUNT_RECEIVED, 
+        AMOUNT_RECEVABLE, AMOUNT_DERATE, GOODS_CTLG_CODE, TMPL_ID)
+    VALUES(
+        #OrderId#, MOD(#OrderId#,100), #GoodsId#, #GoodsInstId#, #GoodsName#, #AmountReceived#,
+        #AmountRecevable#, #CouponMoney#, #GoodsCtlgCode#, #TmplId#)
+    ]]>
+    </insert>
+
+    <!-- 添加商品实例属性值表 1 -->
+    <insert id="insertOrderGoodsInsAttr1" parameterClass="HashMap">
+    <![CDATA[
+    INSERT INTO TF_B_ORDER_GOODSINS_ATVAL(
+        ORDER_ID, PARTITION_ID, GOODS_INST_ID, GOODS_ID, ATTR_CODE, ATTR_NAME,
+        ATTR_VAL_CODE, ATTR_VAL_NAME, ATTR_VAL_DESC, EOP_ATTR_CODE, EOP_ATTR_VAL_CODE) 
+    SELECT 
+        #OrderId#, MOD(#OrderId#,100),  #GoodsInstId#, #GoodsId#, #AttrCode#, T1.ATTR_NAME,
+        #AttrValCode#, T2.ATTR_VAL_NAME, T2.ATTR_VAL_DESC, D.EOP_ATTR_CODE, NVL(C.EOP_ATTR_VAL_CODE, #AttrValCode#)
+    FROM TF_G_GOODS_ATTR T1 
+    JOIN TD_G_ATTR D ON D.ATTR_CODE = T1.ATTR_CODE
+    LEFT JOIN TF_G_GOODS_ATTRVAL T2 ON T1.GOODS_ID = T2.GOODS_ID 
+                                   AND T1.ATTR_CODE = T2.ATTR_CODE
+                                   AND T2.ATTR_VAL_CODE = #AttrValCode#
+    LEFT JOIN TD_G_ATTRVAL C ON  C.ATTR_CODE = D.ATTR_CODE 
+                            AND C.ATTR_VAL_CODE =  T2.ATTR_VAL_CODE
+    WHERE T1.GOODS_ID = #GoodsId# AND T1.ATTR_CODE = #AttrCode# 
+    ]]>
+    </insert>
+
+    <!-- 添加商品实例属性值表2 -->
+    <insert id="insertOrderGoodsInsAttr2" parameterClass="HashMap">
+    <![CDATA[
+    INSERT INTO TF_B_ORDER_GOODSINS_ATVAL(
+        ORDER_ID, PARTITION_ID, GOODS_INST_ID, GOODS_ID, ATTR_CODE, ATTR_NAME,
+        ATTR_VAL_CODE, ATTR_VAL_NAME, ATTR_VAL_DESC, EOP_ATTR_CODE, EOP_ATTR_VAL_CODE)
+    SELECT 
+        #OrderId#, MOD(#OrderId#,100), #GoodsInstId#, #GoodsId#, T1.ATTR_CODE, T1.ATTR_NAME,
+        T2.ATTR_VAL_CODE, T2.ATTR_VAL_NAME, T2.ATTR_VAL_DESC, D.EOP_ATTR_CODE, C.EOP_ATTR_VAL_CODE
+    FROM TF_G_GOODS_ATTR T1 
+    JOIN TD_G_ATTR D ON D.ATTR_CODE = T1.ATTR_CODE
+    LEFT JOIN TF_G_GOODS_ATTRVAL T2 ON T1.GOODS_ID = T2.GOODS_ID AND T1.ATTR_CODE = T2.ATTR_CODE 
+    LEFT JOIN TD_G_ATTRVAL C ON  C.ATTR_CODE = D.ATTR_CODE AND C.ATTR_VAL_CODE =  T2.ATTR_VAL_CODE
+    WHERE T1.GOODS_ID = #GoodsId#
+    ]]>
+    <iterate open=" AND T1.ATTR_CODE NOT IN ( " close=" ) " conjunction="," property="attrCodes">
+        #attrCodes[]#
+    </iterate>
+    </insert>
+
+    <!-- 订单费用明细表 -->
+    <insert id="insertOrderFee" parameterClass="HashMap">
+    <![CDATA[
+    INSERT INTO TF_B_ORDER_FEE(ORDER_ID, PARTITION_ID, FEE_TYPE_CODE, TOPAY_FEE, FEE)
+    VALUES(#OrderId#, MOD(#OrderId#,100), #FeeCode#, #Fee#, #Fee#)
+    ]]>
+    </insert>
+
+    <!-- 添加订单日志表 -->
+    <insert id="insertOrderDeal" parameterClass="HashMap">
+    <![CDATA[
+    INSERT INTO TL_B_ORDER_DEAL(
+        DEAL_LOGID, ORDER_ID, PARTITION_ID, OPERATE_TIME, OPERATOR_ID, OPERATOR_NAME, 
+        DEAL_CONTENT, RESULT_CODE, RESULT_INFO, ORIGINAL_STATE, CURRENT_STATE, SHOW_FLAG)
+    VALUES(
+        F_SYS_GETSEQID('SEQ_ORDERLOG_ID'), #OrderId#, MOD(#OrderId#, 100), SYSDATE, '0', NULL,
+        #DealContent#, #ResultCode#, #ResultInfo#， #OrderState#, #OrderState#, '1')
+    ]]>
+    </insert>
+
+    <!-- 添加订单与第三方订单关系 -->
+    <insert id="insertOrderThirdpartyRef" parameterClass="HashMap">
+    <![CDATA[
+    INSERT INTO TF_B_ORDER_THIRDREF(
+        ORDER_ID, PARTITION_ID, ORDER_NO, THIRD_ORDER_ID, THIRD_CODE, CREATE_TIME)
+    VALUES(#OrderId#, MOD(#OrderId#,100), #OrderNo#, #SubscribeNo#, #SysCode#, SYSDATE)
+    ]]>
+    </insert>
+
+</sqlMap>

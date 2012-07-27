@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+    http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+    <!--  test 503 response code -->
+    <!--  
+    <servlet>
+        <servlet-name>ErrorCodeFilter</servlet-name>
+        <servlet-class>ErrorCodeFilter</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ErrorCodeFilter</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+    -->
+    <servlet>
+        <description>monitor do not delete</description>
+        <servlet-name>HealthMonitor</servlet-name>
+        <servlet-class>com.ailk.ess.common.HealthMonitor</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HealthMonitor</servlet-name>
+        <url-pattern>/HealthMonitor/welcome</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath*:spring/service-*.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+</web-app>

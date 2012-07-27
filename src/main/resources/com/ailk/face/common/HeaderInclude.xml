@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<include>
+  <OrigDomain length="F4" defaultValue="ODOM"/>
+  <HomeDomain length="F4" defaultValue="HDOM"/>
+  <BIPVer ignoredMapping="true" range="0100" defaultValue="0100"/>
+  <ActivityCode length="F8" defaultValue="00000000"/>
+  <ActionCode range="0,1" defaultValue="1"/>
+  <Routing mappedOut="true">
+    <RouteType ignoredMapping="true" range="00" defaultValue="00"/>
+    <RouteValue length="V60" defaultValue="98"/>
+  </Routing>
+  <TransIDO length="V30" defaultValue="0000000000"/>
+  <ProcessTime ignoredMapping="true" type="Date:yyyyMMddHHmmss"/>
+  <TestFlag range="0,1" defaultValue="1"/>
+  <MsgSender length="F4" defaultValue="SEND"/>
+  <MsgReceiver length="F4" defaultValue="RECV"/>
+  <SvcContVer ignoredMapping="true" range="0100" defaultValue="0100"/>
+</include>

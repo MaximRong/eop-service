@@ -1,0 +1,3 @@
+#CacheKey(缓存Key), UpdateFrequency(缓存更新时间), NotifiedUpdateTime(下次刷新时间), CacheUpdatable(缓存数据刷新实现类), Var(静态复杂参数)
+CertTypeMappingCache,1D,2011-08-26 12:00:00, com.ailk.mall.common.nsix.CertTypeMappingUpdate,
+EssTypeMappingCache,1D,2011-08-26 12:00:00, com.ailk.mall.common.nsix.EssTypeMappingUpdate,

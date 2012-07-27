@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<include>
+  <_include src="com/ailk/face/common/HeaderInclude.xml"/>
+  <Response>
+    <RspType length="F1"/>
+    <RspCode length="V5"/>
+    <RspDesc length="V128"/>
+  </Response>
+</include>

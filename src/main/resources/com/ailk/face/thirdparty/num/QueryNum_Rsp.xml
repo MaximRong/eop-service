@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UniBSS> 
+  <_include src="com/ailk/face/common/HeaderRspInclude.xml"/>
+  <SvcCont cdata="true" mappedOut="true">
+    <NumQueryRsp mappedOut="true">
+      <RespCode length="F4" range="0000,0001,9999" />
+      <RespDesc length="V100" />
+      <NumInfo constraint="*">
+          <NumID length="V20"/>
+          <NumMemo length="V200" constraint="?"/>
+          <NumPreFee length="V20" constraint="?"/>
+          <NumLevel length="V10" constraint="?"/>
+          <NumProduct length="V20" constraint="?"/>
+          <NumRelNum length="V20" constraint="?"/>
+      </NumInfo>
+      <_include src="com/ailk/face/common/include/ParaInfo.xml"/>
+    </NumQueryRsp>
+  </SvcCont>
+</UniBSS>

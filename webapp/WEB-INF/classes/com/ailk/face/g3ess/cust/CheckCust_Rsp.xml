@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UniBSS> 
+  <_include src="com/ailk/face/common/HeaderRspInclude.xml"/>
+  <SvcCont cdata="true" mappedOut="true">
+    <CheckCustRsp mappedOut="true">
+      <RespCode length="F4"/>
+      <RespDesc length="V100"/>
+      <CertType length="F2" constraint="?"/>
+      <CertNum length="V20" constraint="?"/>
+      <CertAdress length="V200" constraint="?"/>
+      <CustomerType length="V20" constraint="?"/>
+      <CustomerLevel length="V20" constraint="?"/>
+      <CustomerLoc length="V20" constraint="?"/>
+      <CustomerName length="V128" constraint="?"/>
+      <CertExpireDate length="F8" constraint="?"/>
+      <ContactPerson length="V20" constraint="?"/>
+      <ContactPhone length="V20" constraint="?"/>
+      <_include src="com/ailk/face/common/include/ParaInfo.xml"/>
+    </CheckCustRsp>
+  </SvcCont>
+</UniBSS>

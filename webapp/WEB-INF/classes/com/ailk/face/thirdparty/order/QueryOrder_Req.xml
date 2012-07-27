@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UniBSS>
+  <_include src="com/ailk/face/common/HeaderReqInclude.xml"/>
+  <SvcCont cdata="true" mappedOut="true">
+    <OrdQueryReq mappedOut="true">
+        <SubscribeNo length="V50"/>
+        <_include src="com/ailk/face/common/include/ParaInfo.xml"/>
+    </OrdQueryReq>
+  </SvcCont>
+</UniBSS>

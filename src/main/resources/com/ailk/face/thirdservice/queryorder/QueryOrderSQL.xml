@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="QueryOrder">
+    <typeAlias alias="HashMap" type="java.util.HashMap" />
+
+    <select id="queryOrderInfo" parameterClass="HashMap" resultClass="HashMap">
+    <![CDATA[
+        SELECT T.ORDER_ID          "OrderId",
+               T.MERCHANT_ID       "MerchantCode",
+               T.ORDER_TIME        "SubscribeTime",
+               T.ORDER_STATE       "SubscribeState",
+               T.TOPAY_MONEY       "FeeSum",
+               T.PAY_TYPE          "PayType",
+               T.PAY_STATE         "PayState",
+               T.PAY_WAY           "PayWay",
+               T.INCOME_MONEY      "AlreadyPay",
+               T.INVOCE_TITLE      "InvoTitle",
+               T.INVO_CONT_CODE    "InvoCont",
+               T.DELIVER_TYPE_CODE "DelvType",
+               T.DELIVER_DATE_TYPE "DelvDateType",
+               T.NEED_AFFIRM       "AffirmTag"
+          FROM TF_B_ORDER T,TF_B_ORDER_THIRDREF F
+         WHERE T.ORDER_ID = F.ORDER_ID
+           AND F.THIRD_ORDER_ID = #SubscribeNo#
+           AND F.THIRD_CODE = #SysCode#
+    ]]>
+    </select>
+    
+    <select id="queryOrderNetInfo" parameterClass="HashMap" resultClass="HashMap">
+    <![CDATA[
+        SELECT T.GOODS_ID       "GoodsId",
+               T.PRE_NUM        "PhCode",
+               T.USER_TAG       "PhCodeType",
+               T.CUST_NAME      "NetCustName",
+               T.PSPT_TYPE_CODE "NetPsptType",
+               T.PSPT_NO        "NetPsptNo",
+               T.PSPT_ADDR      "NetPsptAdress"
+          FROM TF_B_ORDER_NETIN T
+         WHERE T.ORDER_ID = #OrderId#
+    ]]>
+    </select>
+    
+    <select id="queryOrderPostInfo" parameterClass="HashMap" resultClass="HashMap">
+    <![CDATA[
+        SELECT T.RECEIVER_NAME      "RecvCustName",
+               T.RECEIVER_PSPT_TYPE "RecvPsptType",
+               T.RECEIVER_PSPT_NO   "RecvPsptNo",
+               T.MOBILE_PHONE       "RecvLinkPhone",
+               T.FIX_PHONE          "RecvFixPhone",
+               T.EMAIL              "RecvEmail",
+               T.PROVINCE_CODE      "PostProvince",
+               T.CITY_CODE          "PostCity",
+               T.DISTRICT_CODE      "PostDistrict",
+               T.POST_CODE          "PostCode",
+               T.POST_ADDR          "PostAddr",
+               T.POST_REMARK        "PostRemark"
+          FROM TF_B_ORDER_POST T
+         WHERE T.ORDER_ID = #OrderId#
+    ]]>
+    </select>
+    
+    <select id="queryOrderLgtsInfo" parameterClass="HashMap" resultClass="HashMap">
+    <![CDATA[
+        SELECT T.LGTS_TYPE  "LogisticsType",
+               T.LGTS_NAME  "LogisticsName",
+               T.LGTS_ORDER "LogisticsCode"
+          FROM TF_B_ORDER_LGTS T
+         WHERE T.ORDER_ID = #OrderId#
+    ]]>
+    </select>
+    
+    <select id="queryOrderDealInfo" parameterClass="HashMap" resultClass="HashMap">
+    <![CDATA[
+      SELECT *
+       FROM (SELECT T.OPERATE_TIME "DelvDateTime"
+               FROM TL_B_ORDER_DEAL T
+              WHERE T.ORDER_ID = #OrderId#
+                AND T.ORIGINAL_STATE = 'D1'
+                AND T.CURRENT_STATE = 'E0'
+              ORDER BY T.OPERATE_TIME DESC)
+      WHERE ROWNUM <= 1
+    ]]>
+    </select>
+    
+    <select id="queryOrderFeeInfo" parameterClass="HashMap" resultClass="HashMap">
+    <![CDATA[
+        SELECT T.FEE_TYPE_CODE "FeeCode",
+               T.FEE "Fee" 
+          FROM TF_B_ORDER_FEE T 
+         WHERE T.ORDER_ID = #OrderId#
+    ]]>
+    </select>
+    
+    <select id="queryOrderGoodAtvalInfo" parameterClass="HashMap" resultClass="HashMap">
+    <![CDATA[
+        SELECT T.ATTR_CODE "AttrCode",
+               T.ATTR_VAL_CODE "AttrValCode",
+               c.PROVINCE_CODE "Province"
+          FROM TF_B_ORDER_GOODSINS_ATVAL T
+     LEFT JOIN TF_M_CITY c ON c.CITY_CODE = t.ATTR_VAL_CODE
+         WHERE T.ORDER_ID = #OrderId#
+           AND T.ATTR_CODE IN ('A000023', 'A000011', 'A000025')
+    ]]>
+    </select>
+
+</sqlMap>

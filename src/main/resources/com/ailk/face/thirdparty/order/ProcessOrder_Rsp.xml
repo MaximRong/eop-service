@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UniBSS> 
+  <_include src="com/ailk/face/common/HeaderRspInclude.xml"/>
+  <SvcCont cdata="true" mappedOut="true">
+    <AccountRsp mappedOut="true">
+      <RespCode length="F4" range="0000,0100,0200,0300,0400,0500,0600,0700,9999" />
+      <RespDesc length="V100" />
+      <MallOrderNo length="V50" />
+      <_include src="com/ailk/face/common/include/ParaInfo.xml"/>
+    </AccountRsp>
+  </SvcCont>
+</UniBSS>

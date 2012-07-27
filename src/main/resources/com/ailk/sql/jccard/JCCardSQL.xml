@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="JCCardSQL">
+    <typeAlias alias="HashMap" type="java.util.HashMap" />
+    
+    <!-- 查询返回信息 -->
+    <select id="queryRsqData" parameterClass="String" resultClass="HashMap">
+        SELECT T.RSPDATA,
+               T.ID,
+               T.IF_NO,
+               T.RSP_RESULT,
+               T.CARD_PRODUCT_NAME,
+               T.USERFLAG
+        FROM JC_RSP_DATA t
+        WHERE T.SESSIONID = #sessionID#
+        AND T.STATE = '0'
+        ORDER BY T.UPDATE_TIME
+    </select>    
+    
+    <!-- 查询if1接口返回的信息 -->
+    <select id="queryIF1RsqData" parameterClass="String" resultClass="HashMap">
+        SELECT T.NAME "name",
+               T.AID "aid",
+               T.APPSIZE "appSize",
+               T.MAYOPERATE "mayOperate",
+               T.SUPPLIERNAME "supplierName",
+               T.FEEDESC "feeDesc"
+         FROM JC_RSP_SUB_DATA T
+         WHERE T.ID = #id#
+    </select>
+</sqlMap>

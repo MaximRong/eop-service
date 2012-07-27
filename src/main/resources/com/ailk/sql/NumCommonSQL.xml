@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="NumCommon">
+    <typeAlias alias="HashMap" type="java.util.HashMap" />
+
+    <!-- 获取第三方系统编码 -->
+    <select id="getAppSysCode" parameterClass="String" resultClass="HashMap">
+    <![CDATA[
+        SELECT T.SYSCODE
+          FROM TD_S_THIRD T
+         WHERE T.APPID = #APPID#
+           AND T.STATE = '1'
+           AND ROWNUM < 2
+    ]]>
+    </select>
+    
+    
+</sqlMap>

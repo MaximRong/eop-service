@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UniBSS> 
+  <_include src="com/ailk/face/common/HeaderRspInclude.xml"/>
+  <SvcCont cdata="true" mappedOut="true">
+    <OrdQueryRsp mappedOut="true">
+      <RespCode length="F4"/>
+      <RespDesc length="V100" />
+      <MerchantCode length="F7"/>
+      <SubscribeTime length="F14" type="Date:yyyyMMddHHmmss"/>
+      <SubscribeState length="F2"/>
+      <GoodsId length="F12"/>
+      <FeeSum length="V11"/>
+      <FeeInfo constraint="*">
+        <FeeCode length="V11" required="true"/>
+        <Fee length="V11" required="true"/>
+      </FeeInfo>
+      <ProductId length="V16"/>
+      <PhCode length="V20"/>
+      <PhCodeType length="F1" constraint="?"/>
+      <PhCodeProvince length="F2"/>
+      <PhCodeCity length="F3"/>
+      <PhCodeDistrict length="V10" constraint="?"/>
+      <NetCustName length="V20" constraint="?"/>
+      <NetPsptType length="F2" constraint="?"/>
+      <NetPsptNo length="V20" constraint="?"/>
+      <NetPsptAdress length="V200" constraint="?"/>
+      <FrstMonBillMode length="F2" constraint="?"/>
+      <PayType length="F2"/>
+      <PayState length="F1"/>
+      <PayWay length="F2"/>
+      <AlreadyPay length="V11"/>
+      <InvoTitle length="V50" constraint="?"/>
+      <InvoCont length="F2" constraint="?"/>
+      <DelvType length="F2"/>
+      <DelvDateType length="F2"/>
+      <DelvDateTime length="F14" type="Date:yyyyMMddHHmmss" constraint="?"/>
+      <AffirmTag length="F1"/>
+      <RecvCustName length="V20"/>
+      <RecvPsptType length="F2" constraint="?"/>
+      <RecvPsptNo length="V20" constraint="?"/>
+      <RecvLinkPhone length="V20" constraint="?"/>
+      <RecvFixPhone length="V20" constraint="?"/>
+      <RecvEmail length="V20" constraint="?"/>
+      <PostProvince length="F6"/>
+      <PostCity length="F6"/>
+      <PostDistrict length="V10" constraint="?"/>
+      <PostCode length="V10" constraint="?"/>
+      <PostAddr length="V200"/>
+      <PostRemark length="V200" constraint="?"/>
+      <LogisticsType length="F1" constraint="?"/>
+      <LogisticsName length="V50" constraint="?"/>
+      <LogisticsCode length="V30" constraint="?"/>
+      <_include src="com/ailk/face/common/include/ParaInfo.xml"/>
+    </OrdQueryRsp>
+  </SvcCont>
+</UniBSS>

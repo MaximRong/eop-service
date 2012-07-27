@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="NumProvince">
+    <typeAlias alias="HashMap" type="java.util.HashMap" />
+
+    <!-- 获取北六号码归属信息 -->
+    <select id="getN6NumberInfo" parameterClass="String" resultClass="HashMap">
+    <![CDATA[
+        SELECT T.PROVINCE_CODE "Province", M.N6_AREA_CODE "City", 
+               T.CITY_CODE "District", T.DEPART_ID "ChannelID"
+        FROM   TF_R_PHNBR_IDLE T, TF_M_N6AREA_MAP M
+        WHERE  T.SERIAL_NUMBER = #SERIAL_NUMBER#
+        AND    T.EPARCHY_CODE = M.AREA_CODE
+        AND    M.AREA_LEVEL = 'B'
+    ]]>
+    </select>
+    
+    <!-- 第三方系统号码，转换北六区县编码 -->
+    <select id="getThirdPartyN6CityCode" parameterClass="String" resultClass="HashMap">
+    <![CDATA[
+        SELECT '' "Province", T.EPARCHY_CODE "City", 
+               T.CITY_CODE "District", T.STOCK_ID "ChannelID"
+        FROM   TF_R_MPHONECODE_IDLE T
+        WHERE  T.SERIAL_NUMBER = #SERIAL_NUMBER#
+    ]]>
+    </select>
+    
+</sqlMap>

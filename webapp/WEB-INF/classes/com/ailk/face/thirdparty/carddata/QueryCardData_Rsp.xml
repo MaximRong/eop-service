@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UniBSS> 
+  <_include src="com/ailk/face/common/HeaderRspInclude.xml"/>
+  <SvcCont cdata="true" mappedOut="true">
+    <GetDataRsp mappedOut="true">
+      <RespCode length="F4" range="0000,0001,9999"/>
+      <RespDesc length="V100"/>
+      <ICCID length="V22"/>
+      <IMSI length="F15" constraint="?"/>
+      <ProcId length="V20"/>
+      <ActiveId length="V20"/>
+      <ScriptSeq length="V256"/>
+      <CardData length="V1024" constraint="?"/>
+      <ReservPara length="V60" constraint="?"/>
+    </GetDataRsp>
+  </SvcCont>
+</UniBSS>

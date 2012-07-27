@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UniBSS> 
+  <_include src="com/ailk/face/common/HeaderRspInclude.xml"/>
+  <SvcCont cdata="true" mappedOut="true">
+    <OrdChgRsp mappedOut="true">
+      <RespCode range="0000,9999"/>
+      <RespDesc length="V100"/>
+    </OrdChgRsp>
+  </SvcCont>
+</UniBSS>

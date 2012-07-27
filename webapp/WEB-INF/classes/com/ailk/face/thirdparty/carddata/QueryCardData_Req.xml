@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UniBSS>
+  <_include src="com/ailk/face/common/HeaderReqInclude.xml"/>
+  <SvcCont cdata="true" mappedOut="true">
+    <GetDataReq mappedOut="true">
+        <Province length="F2"/>
+        <City length="F3"/>
+        <District length="V10" constraint="?"/>
+        <ChannelID length="V20"/>
+        <ChannelType length="F7"/>
+        <OperatorID length="V20"/>
+        <ReDoTag length="F1" range="0,1,2"/>
+        <ProcId length="V20" constraint="?"/>
+        <ActiveId length="V20" constraint="?"/>
+        <ICCID length="V22"/>
+        <OldICCID length="V22" constraint="?"/>
+        <NumID length="V20"/>
+        <BusiType length="F2"/>
+        <CardType length="V30"/>
+        <UserType length="F2"/>
+        <ReservPara length="V60" constraint="?"/>
+    </GetDataReq>
+  </SvcCont>
+</UniBSS>

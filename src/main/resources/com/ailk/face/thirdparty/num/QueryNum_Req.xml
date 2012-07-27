@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UniBSS>
+  <_include src="com/ailk/face/common/HeaderReqInclude.xml"/>
+  <SvcCont cdata="true" mappedOut="true">
+    <NumQueryReq mappedOut="true">
+        <Province length="F2"/>
+        <City length="F3" constraint="?"/>
+        <District length="V10" constraint="?"/>
+        <ChannelID length="V20" constraint="?"/>
+        <ChannelType length="F7" constraint="?"/>
+        <OperatorID length="V20" constraint="?"/>
+        <AccessType length="F2" range="01,02,03,05,99"/>
+        <ALLQueryMode length="F1" range="0,1"/>
+        <ResourcesType length="F2" range="01,02"/>
+        <BackNumber length="V10" range="1~200"/>
+        <SortMode length="F1" range="0,1"/>
+        <PreFeeMode length="F1" range="0,1"/>
+        <PreFee constraint="*">
+            <MinFee length="V10"/>
+            <MaxFee length="V10"/>
+        </PreFee>
+        <KeyValueMode length="F1" range="0,1"/>
+        <Key constraint="*">
+            <KeyValue length="V20"/>
+        </Key>
+        <RoleValueMode length="F1" range="0,1"/>
+        <SnRole constraint="*">
+            <RoleValue length="V20"/>
+        </SnRole>
+        <OtherMode length="F1" range="0,1"/>
+        <Other constraint="*">
+            <OtherType length="V20"/>
+            <OtherValue1 length="V20"/>
+            <OtherValue2 length="V20" constraint="?"/>
+        </Other>
+        <_include src="com/ailk/face/common/include/ParaInfo.xml"/>
+    </NumQueryReq>
+  </SvcCont>
+</UniBSS>

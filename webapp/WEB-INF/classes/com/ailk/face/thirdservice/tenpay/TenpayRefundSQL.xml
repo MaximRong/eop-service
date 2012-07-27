@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Tenpay">
+    <typeAlias alias="HashMap" type="java.util.HashMap" />
+
+    <!-- 记录接口日志表 -->
+    <insert id="RecordRefundLog" parameterClass="HashMap">
+        INSERT INTO TL_B_TENPAY_REFUND_LOG
+        (LOG_ID, BEGIN_TIME, END_TIME, EOP_CODE, EOP_MSG, PARTNER_ID, OUT_TRADE_NO,
+        TRANSACTION_ID, OUT_REFUND_NO, TOTAL_FEE, REFUND_FEE, RECV_USER_ID,
+        RECCV_USER_NAME, RET_CODE, RET_MSG, REFUND_ID, REFUND_CHANNEL, REFUND_STATUS)
+        VALUES
+        (F_SYS_GETSEQID('SEQ_COMMON_LOG'), TO_DATE(#start_time#, 'yyyy-mm-dd hh24:mi:ss'),
+        TO_DATE(#end_time#, 'yyyy-mm-dd hh24:mi:ss'), #EopCode#, #EopMsg#, #partner#,
+        #out_trade_no#, #transaction_id#, #out_refund_no#, #total_fee#, #refund_fee#,
+        #recv_user_id#, #reccv_user_name#, #retcode#, #retmsg#, #refund_id#,
+        #refund_channel#, #refund_status#)
+    </insert>
+</sqlMap>

@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="TaobaoAccess">
+    <typeAlias alias="HashMap" type="java.util.HashMap" />
+
+    <parameterMap id="RecordOrderMap" class="HashMap">
+        <parameter property="tid" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="num_iid" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="num" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="price" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="payment" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="total_fee" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="commission_fee" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="trade_status" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="trade_create_time" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="pay_time" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="buyer_message" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="buyer_area" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="buyer_nick" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="alipay_no" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_name" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_province" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_city" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_district" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_address" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_post" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_mobile" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_phone" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="phonecode" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="outer_iid" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="invoice_name" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="refund_id" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+
+        <parameter property="phone_num" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="province_code" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="city_code" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="plan_title" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="out_plan_id" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="out_package_id" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="effect_rule" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="agreement_id" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="phone_owner_name" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="cert_type" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="cert_card_num" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="phone_deposit" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="phone_free_deposit" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+
+        <parameter property="p_retCode" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT" />
+        <parameter property="p_orderId" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT" />
+        <parameter property="p_provinceId" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT" />
+        <parameter property="p_cityId" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT" />
+    </parameterMap>
+
+    <!-- 记录淘宝原始订单信息 -->
+    <procedure id="RecordOrder" parameterMap="RecordOrderMap">
+    <![CDATA[
+        {call P_TAOBAO_ORDER(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?,?,?,?, ?,?,?,?)}
+    ]]>
+    </procedure>
+
+    <parameterMap id="RecordSwkOrderMap" class="HashMap">
+        <parameter property="tid" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="num_iid" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="num" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="price" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="payment" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="total_fee" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="commission_fee" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="trade_status" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="trade_create_time" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="pay_time" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="buyer_message" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="buyer_area" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="buyer_nick" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="alipay_no" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_name" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_province" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_city" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_district" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_address" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_post" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_mobile" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_phone" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="phonecode" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="outer_iid" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="invoice_name" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="refund_id" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="oid" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="cid" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="child_single_price" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="child_all_price" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="child_num" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="count_num" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+
+        <parameter property="p_retCode" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT" />
+        <parameter property="p_orderId" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT" />
+        <parameter property="p_provinceId" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT" />
+        <parameter property="p_cityId" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT" />
+    </parameterMap>
+
+    <!-- 记录淘宝上网卡原始订单信息 -->
+    <procedure id="RecordSwkOrder" parameterMap="RecordSwkOrderMap">
+    <![CDATA[
+        {call P_TAOBAO_SWK_ORDER(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, ?,?,?,?,?,?, ?,?,?,?)}
+    ]]>
+    </procedure>
+
+
+    <parameterMap id="RecordRefundMap" class="HashMap">
+        <parameter property="tid" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="num_iid" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="num" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="price" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="payment" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="total_fee" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="commission_fee" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="trade_status" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="trade_create_time" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="pay_time" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="buyer_message" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="buyer_area" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="buyer_nick" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="alipay_no" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_name" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_province" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_city" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_district" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_address" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_post" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_mobile" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_phone" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="phonecode" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="outer_iid" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="invoice_name" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="refund_id" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+
+        <parameter property="phone_num" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="province_code" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="city_code" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="plan_title" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="out_plan_id" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="out_package_id" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="effect_rule" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="agreement_id" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="phone_owner_name" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="cert_type" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="cert_card_num" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="phone_deposit" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="phone_free_deposit" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+
+        <parameter property="create_time" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="ret_time" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="reason" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="desc" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+
+        <parameter property="p_retCode" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT" />
+    </parameterMap>
+
+    <!-- 记录淘宝退款信息 -->
+    <procedure id="RecordRefund" parameterMap="RecordRefundMap">
+    <![CDATA[
+        {call P_TAOBAO_RET(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?,?,?,?, ?,?,?,?, ?)}
+    ]]>
+    </procedure>
+
+    <parameterMap id="RecordSwkRefundMap" class="HashMap">
+        <parameter property="tid" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="num_iid" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="num" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="price" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="payment" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="total_fee" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="commission_fee" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="trade_status" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="trade_create_time" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="pay_time" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="buyer_message" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="buyer_area" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="buyer_nick" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="alipay_no" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_name" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_province" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_city" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_district" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_address" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_post" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_mobile" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="receiver_phone" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="phonecode" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="outer_iid" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="invoice_name" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="refund_id" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="oid" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="cid" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="create_time" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="ret_time" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="child_single_price" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="refundFee" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="child_num" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="count_num" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="reason" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="desc" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+
+        <parameter property="p_retCode" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT" />
+    </parameterMap>
+
+    <!-- 记录淘宝上网卡退款信息 -->
+    <procedure id="RecordSwkRefund" parameterMap="RecordSwkRefundMap">
+    <![CDATA[
+        {call P_TAOBAO_SWK_RET(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?,?, ?)}
+    ]]>
+    </procedure>
+
+    <!-- 获取淘宝订单序列 -->
+    <select id="GetTaobaoOrderId" resultClass="String">
+        SELECT F_SYS_GETSEQID('SEQ_TAOBAO_ORDER') FROM DUAL
+    </select>
+
+    <!-- 获取淘宝日志序列 -->
+    <select id="GetTaobaoLogId" resultClass="String">
+        SELECT F_SYS_GETSEQID('SEQ_TAOBAO_LOG') FROM DUAL
+    </select>
+
+    <!-- 记录日志主表 -->
+    <insert id="RecordLog" parameterClass="HashMap">
+        INSERT INTO TL_B_TAOBAO_LOG
+        (LOG_ID, LOG_TYPE, BEGIN_TIME, END_TIME, STATUS,
+        PAGE_NUM, ALL_RECORD, SUCC_RECORD, FAIL_RECORD, INVALID_RECORD)
+        VALUES
+        (#logid#, #logtype#, TO_DATE(#begin#,
+        'yyyyMMddHH24miss'), TO_DATE(#end#, 'yyyyMMddHH24miss'),
+        #status#, #page_num#, #all#, #succ#, #fail#, #invalid#)
+    </insert>
+
+    <!-- 记录日志子表 -->
+    <insert id="RecordSubLog" parameterClass="HashMap">
+        INSERT INTO TL_B_TAOBAO_LOG_DETAIL
+        (SEQ, LOG_ID, TID, ORDER_STATUS, STATUS, LOG_DESC)
+        VALUES
+        (#sub_logid#, #logid#, #tid#, #order_status#, #status#, #logdesc#)
+    </insert>
+    
+    <!-- 转换为淘宝物流公司编码 -->
+    <select id="Parse2TaobaoLgtsCode" parameterClass="String" resultClass="HashMap">
+        SELECT M.THIRD_LGTS_CODE, M.THIRD_LGTS_EXPRESSION
+        FROM   TD_B_LGTS_MAPPING M
+        WHERE  M.LGTS_ID = #LGTS_ID#
+        AND    M.THIRD_TYPE = '00'
+    </select>
+    
+    <!-- 更新淘宝订单配送状态 -->
+    <update id="RefreshSendStatus" parameterClass="HashMap">
+        UPDATE TF_B_TAOBAO_SRC_ORDER T
+        SET    T.SEND_STATUS = #Status#
+        WHERE  T.TID = #Tid#
+    </update>
+    
+   <!-- 查询是否已同步淘宝订单 -->
+    <select id="IsTidExists" parameterClass="String" resultClass="int">
+        SELECT COUNT(R.TID)
+        FROM   TF_B_TAOBAO_SRC_ORDER R
+        WHERE  R.TID = #Tid#
+    </select>
+    
+    <!-- 记录异常订单 -->
+    <insert id="RecordExOrder" parameterClass="HashMap">
+        INSERT INTO TF_B_TAOBAO_EX_ORDER
+        (SEQ, TID, EX_TYPE, EX_DESC, STATUS, CREATE_TIME, UPDATE_TIME)
+        VALUES
+        (#logid#, #tid#, #ex_type#, #ex_desc#, #status#, 
+         to_date(#time#, 'yyyyMMddHH24miss'), to_date(#time#, 'yyyyMMddHH24miss'))
+    </insert>
+    
+    <!-- 更新日志信息 -->
+    <update id="RefreshLogFailRecord" parameterClass="HashMap">
+        UPDATE TL_B_TAOBAO_LOG L
+        SET    L.FAIL_RECORD = #fail#,
+               L.SUCC_RECORD = L.ALL_RECORD - #fail# - L.INVALID_RECORD
+        WHERE  L.LOG_ID = #logid#
+    </update>
+    
+    <!-- 根据类型查询短信配置 -->
+    <select id="QueryMsgConfigByCateCode" parameterClass="String" resultClass="HashMap">
+        SELECT C.CONFIG_ID, G.MESSAGE_CONTENT, G.SMS_BIZCODE,
+               G.SMS_BIZNAME, G.SMS_TASKNAME
+        FROM   TD_B_SMS_CONFIG C, TD_B_SMS_CATEGORY G
+        WHERE  C.CONFIG_STATE = '1'
+        AND    C.CATEGORY_CODE = #cateCode#
+        AND    C.CATEGORY_CODE = G.CATEGORY_CODE
+    </select>
+    
+    <!-- 根据短信配置标识查询收信人 -->
+    <select id="QueryMsgReceiverByConfig" parameterClass="String" resultClass="HashMap">
+        SELECT R.RECEIVER_PHONE
+        FROM   TD_B_SMS_RECEIVER R
+        WHERE  R.CONFIG_ID = #configId#
+        AND    R.RECEIVER_STATE = '1'
+    </select>
+
+</sqlMap>

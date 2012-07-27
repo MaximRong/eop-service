@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="AlipayAccess">
+    <typeAlias alias="HashMap" type="java.util.HashMap" />
+    <typeAlias alias="tradeDetail" type="com.ailk.thirdservice.alipay.TradeDetailBean" />
+
+    <!-- 记录接口日志表 -->
+    <insert id="RecordLog" parameterClass="HashMap">
+        INSERT INTO TL_B_ALIPAY_LOG
+        (log_id, log_type, start_time, end_time, 
+         is_success, error, count, rsp_data, check_code, check_desc)
+        VALUES
+        (#log_id#, #log_type#, to_date(#start_time#, 'yyyy-mm-dd hh24:mi:ss'), to_date(#end_time#, 'yyyy-mm-dd hh24:mi:ss'), 
+         #is_success#, #error#, #count#, #csv_data#, #CheckCode#, #CheckDesc#)
+    </insert>
+    
+    <!-- 记录帐务明细表 -->
+    <insert id="RecordTradeReport" parameterClass="tradeDetail">
+        INSERT INTO TF_B_ALIPAY_TRADE_REPORT
+        (log_id, account_seq, trade_id, outer_id, trade_channel, trade_type, 
+         goods_name, user_id, oppose_code, oppose_email, income, payout, 
+         balance, trade_time, remark, tid, check_code, check_desc)
+        VALUES
+        (#logId#, #accountSeq#, #tradeId#, #outerId#, #tradeChannel#, #tradeType#, 
+         #goodsName#, #userId#, #opposeCode#, #opposeEmail#, #income#, #payout#, 
+         #balance#, to_date(#tradeTime#, 'yyyy-mm-dd hh24:mi:ss'), #remark#, #taobaoId#, #checkCode#, #checkDesc#)
+    </insert>
+    
+    <!-- 获取日志标识 -->
+    <select id="GetAlipayLogId" resultClass="String">
+        SELECT F_SYS_GETSEQID('SEQ_ALIPAY_LOG') FROM DUAL
+    </select>
+    
+    <!-- 查询帐务明细是否存在 -->
+    <select id="QueryTradeReportExists" parameterClass="tradeDetail" resultClass="int">
+        SELECT COUNT(R.trade_id)
+        FROM   TF_B_ALIPAY_TRADE_REPORT R
+        WHERE  R.trade_id = #tradeId#
+    </select>
+
+</sqlMap>

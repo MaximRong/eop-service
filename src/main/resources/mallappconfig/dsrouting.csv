@@ -1,0 +1,4 @@
+#dsName,事务类型(jta/jdbc), JNDI Name(数据库JNDI名称), provider url(提供者地址)
+EcsStore,jdbc,FaceDB,t3://127.0.0.1:7001
+SelNumC,jdbc,SelNumC,t3://127.0.0.1:7001
+A,jdbc,SelNumP1,t3://127.0.0.1:7001

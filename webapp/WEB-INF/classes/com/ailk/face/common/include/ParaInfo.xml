@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<include>
+  <Para constraint="*">
+    <ParaID length="V20"/>
+    <ParaValue length="V60"/>
+  </Para>
+</include>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UniBSS>
+  <_include src="com/ailk/face/common/HeaderReqInclude.xml"/>
+  <SvcCont cdata="true" mappedOut="true">
+    <WriteCardReq mappedOut="true">
+        <ErrorICCID length="V22" constraint="?"/>
+        <ICCID length="V22"/>
+        <IMSI length="V20"/>
+        <ProcId length="V20" constraint="?"/>
+        <ActiveId length="V20"/>
+        <ReasonID length="V10"/>
+        <ErrorComments length="V256" constraint="?"/>
+        <ReservPara length="V60" constraint="?"/>
+    </WriteCardReq>
+  </SvcCont>
+</UniBSS>

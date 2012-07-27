@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ThirdPartyDbUnit">
+    <typeAlias alias="HashMap" type="java.util.HashMap" />
+
+    <!-- 获取订单标识 -->
+    <select id="getOrderId" resultClass="String">
+        SELECT F_SYS_GETSEQID('SEQ_ORDER_ID') FROM DUAL
+    </select>
+
+    <!-- 获取商品实例标识 -->
+    <select id="getGoodsInstId" resultClass="String">
+        SELECT F_SYS_GETSEQID('SEQ_GOODS_INST_ID') FROM DUAL
+    </select>
+
+    <!-- 查询二级目录 -->
+    <select id="getGoodsLevel" parameterClass="String" resultClass="HashMap">
+    <![CDATA[
+        SELECT A.TMPL_CTGR_CODE,
+               A.TMPL_CTGR_RNAME,
+               A.PARENT_CTGR_CODE,
+               LEVEL LE
+          FROM TD_G_TMPL_CTGR A, TF_G_TEMPLATE B
+         WHERE A.TMPL_CTGR_CODE = B.TMPL_CTGR_CODE
+         START WITH B.TMPL_ID = #TmplId#
+        CONNECT BY PRIOR A.PARENT_CTGR_CODE = A.TMPL_CTGR_CODE
+         ORDER BY LEVEL DESC
+    ]]>
+    </select>
+
+    <!-- 查询商品产品信息 -->
+    <select id="queryGoodsProduct" parameterClass="String" resultClass="HashMap">
+    <![CDATA[
+        SELECT P.PRODUCT_VALUE
+        FROM   TF_G_GOODS_ATTR A, TF_G_GOODS_ATTRVAL V, TD_P_PRODUCT P
+        WHERE  A.GOODS_ID = V.GOODS_ID
+        AND    A.PARTITION_ID = V.PARTITION_ID
+        AND    A.ATTR_CODE = V.ATTR_CODE
+        AND    A.ATTR_CODE = 'A000023'
+        AND    A.GOODS_ID = #GoodsId#
+        AND    A. PARTITION_ID = MOD(#GoodsId#, 100)
+        AND    V.ATTR_VAL_CODE = P.PRODUCT_ID
+    ]]>
+    </select>
+
+    <!-- 查询商品付费类型属性值编码 -->
+    <select id="queryGoodsResType" parameterClass="String" resultClass="String">
+    <![CDATA[
+        SELECT V.ATTR_VAL_CODE
+        FROM   TF_B_ORDER_GOODSINS_ATVAL V
+        WHERE  V.ORDER_ID = #OrderId#
+        AND    V.PARTITION_ID = MOD(#OrderId#, 100)
+        AND    V.ATTR_CODE = 'A000004'
+    ]]>
+    </select>
+
+    <!-- 查询商品手机号码 -->
+    <select id="queryGoodsNumber" parameterClass="String" resultClass="String">
+    <![CDATA[
+        SELECT V.ATTR_VAL_CODE
+        FROM   TF_B_ORDER_GOODSINS_ATVAL V
+        WHERE  V.ORDER_ID = #OrderId#
+        AND    V.PARTITION_ID = MOD(#OrderId#, 100)
+        AND    V.ATTR_CODE = 'A000005'
+    ]]>
+    </select>
+
+    <!-- 判断是否需要生成相应的订单 -->
+    <select id="isNeedSpecOrder" parameterClass="HashMap" resultClass="int">
+    <![CDATA[
+        SELECT COUNT(1)
+        FROM   TD_B_SPEC_ORDER_RULE R
+        WHERE  R.THIRD_CODE = #SysCode#
+        AND    R.ORDER_TYPE = #OrderType#
+    ]]>
+    <isNotEmpty property="Rule_Key1" prepend="AND">
+    <![CDATA[
+               R.RULE_KEY1 = #Rule_Key1#
+    ]]>
+    </isNotEmpty>
+    <isNotEmpty property="Rule_Key2" prepend="AND">
+    <![CDATA[
+               R.RULE_KEY2 = #Rule_Key2#
+    ]]>
+    </isNotEmpty>
+    <isNotEmpty property="Rule_Key3" prepend="AND">
+    <![CDATA[
+               R.RULE_KEY3 = #Rule_Key3#
+    ]]>
+    </isNotEmpty>
+    <isNotEmpty property="Rule_Key4" prepend="AND">
+    <![CDATA[
+               R.RULE_KEY4 = #Rule_Key4#
+    ]]>
+    </isNotEmpty>
+    <isNotEmpty property="Rule_Key5" prepend="AND">
+    <![CDATA[
+               R.RULE_KEY5 = #Rule_Key5#
+    ]]>
+    </isNotEmpty>
+    </select>
+    
+    <!-- 记录号码预定订单 -->
+    <insert id="recordNumOrder" parameterClass="HashMap">
+    <![CDATA[
+        INSERT INTO TF_B_BESPEAK_INFO(
+            PRO_ID, PARTITION_ID, CUST_NAME, PSPT_TYPE_CODE, PSPT_NO, PRE_NUM, 
+            NUM_FRONT_TIME, NUM_EXPIRE_TIME, SYSCODE, UPDATE_TIME, 
+            STATE, ORDER_NO, REMARK, PROVINCE_CODE, CITY_CODE, PRODUCT_ID)
+        VALUES (
+            #OrderId# , 0, #CustName#, #CertType#, #CertNum#, #ResourcesCode#, 
+            SYSDATE, TO_DATE(#OccupiedTime#, 'YYYYMMDDHH24MISS'), #SysCode#, SYSDATE,
+            '0', #OrderNo#, #Remark#, #Province#, #City#, #ProductID#)
+    ]]>
+    </insert>
+    
+</sqlMap>

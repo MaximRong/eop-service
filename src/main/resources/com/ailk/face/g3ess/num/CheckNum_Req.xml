@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UniBSS>
+  <_include src="com/ailk/face/common/HeaderReqInclude.xml"/>
+  <SvcCont cdata="true" mappedOut="true">
+    <CheckNumReq mappedOut="true">
+        <Province length="F2"/>
+        <City length="F3" constraint="?"/>
+        <District length="V10" constraint="?"/>
+        <ChannelID length="V20"/>
+        <ChannelType length="F7"/>
+        <OperatorID length="V20" constraint="?"/>
+        <AccessType length="F2" range="01,02,03,99"/>
+        <SysCode length="F4"/>
+        <ResourcesInfo constraint="+">
+            <KeyChangeTag length="F1" range="0,1"/>
+            <OldKey length="V20" constraint="?"/>
+            <ProKeyMode length="F1" range="0,1,2"/>
+            <ProKey length="V20"/>
+            <GroupKey length="V20" constraint="?"/>
+            <ResourcesType length="F2" range="01,02"/>
+            <ResourcesCode length="V30"/>
+            <OldResourcesCode length="V30" constraint="?"/>
+            <OccupiedFlag length="F1" range="0~5"/>
+            <OccupiedTime length="V20" type="Date:yyyyMMddHHmmss" constraint="?"/>
+            <CustName length="V20" constraint="?"/>
+            <CertType length="F2" constraint="?"/>
+            <CertNum length="V30" constraint="?"/>
+        </ResourcesInfo>
+        <_include src="com/ailk/face/common/include/ParaInfo.xml"/>
+    </CheckNumReq>
+  </SvcCont>
+</UniBSS>

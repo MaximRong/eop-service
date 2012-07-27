@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UniBSS>
+  <_include src="com/ailk/face/common/HeaderReqInclude.xml" />
+  <SvcCont cdata="true" mappedOut="true">
+    <AccountReq mappedOut="true">
+      <MerchantCode length="F7" />
+      <SubscribeNo length="V50" />
+      <OperatorID length="V20" /> <!-- 操作员ID -->
+      <Province length="F2" /> <!-- 省分 -->
+      <City length="F3" /> <!-- 地市 -->
+      <District length="V10" /> <!-- 区县 -->
+      <ChannelID length="V20" /> <!-- 渠道编码 -->
+      <ChannelType length="F7" /> <!-- 渠道类型 -->
+      <AccessType length="F2" range="01~03,99" /> <!-- 接入类型 01 WEB； 02 短信； 03 WAP； 99 其他 -->
+      <SimCardNo>
+        <CardDataProcID constraint="?" length="V30" />
+        <SimID length="V20" />
+        <IMSI constraint="?" length="F15" />
+        <CardType constraint="?" length="V30" />
+        <CardData constraint="?" length="V1024" />
+      </SimCardNo>
+      <ResourcesType constraint="?" length="F2" range="03~05" />
+      <ResProcId constraint="?" length="V20" />
+      <ResourcesCode constraint="?" length="V30" />
+      <ResourcesFee constraint="?" length="V20" />
+      <_include src="com/ailk/face/common/include/ParaInfo.xml" />
+    </AccountReq>
+  </SvcCont>
+</UniBSS>

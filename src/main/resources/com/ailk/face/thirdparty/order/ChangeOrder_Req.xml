@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UniBSS>
+  <_include src="com/ailk/face/common/HeaderReqInclude.xml"/>
+  <SvcCont cdata="true" mappedOut="true">
+    <OrdChgReq mappedOut="true">
+        <Province length="F2"/>
+        <City length="F3" constraint="?"/>
+        <District length="V10" constraint="?"/>
+        <ChannelID length="V20" constraint="?"/>
+        <ChannelType length="F7" constraint="?"/>
+        <OperatorID length="V20" constraint="?"/>
+        <AccessType length="F2" range="01,02,03,99"/>
+        <SysCode length="F4"/>
+        <SubscribeNo length="V50"/>
+        <OldState length="F2"/>
+        <NewState length="F2"/>
+        <_include src="com/ailk/face/common/include/ParaInfo.xml"/>
+    </OrdChgReq>
+  </SvcCont>
+</UniBSS>
