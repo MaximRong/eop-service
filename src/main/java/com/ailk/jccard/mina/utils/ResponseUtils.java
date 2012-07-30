@@ -17,7 +17,7 @@ public class ResponseUtils {
     /**
      * 生成服务端请求报文头.
      */
-    public static Object generateJCHeadBean(String ifNo, SessionInfo sessionInfo) {
+    public static JCHeadBean generateJCHeadBean(String ifNo, SessionInfo sessionInfo) {
         JCHeadBean head = new JCHeadBean();
         head.setSessionId(sessionInfo.getSessionId());
         head.setTypeFlag(TypeUtils.getJcCode(ifNo));
@@ -27,7 +27,7 @@ public class ResponseUtils {
     /**
      * 生成客户端请求报文头.
      */
-    public static Object generateEssHeadBean(String ifNo, SessionInfo sessionInfo) {
+    public static JCHeadBean generateEssHeadBean(String ifNo, SessionInfo sessionInfo) {
         JCHeadBean head = new JCHeadBean();
         head.setSessionId(sessionInfo.getSessionId());
         head.setTypeFlag(TypeUtils.getEssCode(ifNo));

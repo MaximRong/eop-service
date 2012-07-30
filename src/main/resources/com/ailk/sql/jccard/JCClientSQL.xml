@@ -44,4 +44,12 @@
                )
     </insert>
     
+    <select id="queryResponseInfo" parameterClass="HashMap" resultClass="HashMap">
+        SELECT T.RSPDATA, T.RSP_RESULT
+          FROM JC_RSP_DATA T
+         WHERE T.SESSIONID = #SESSIONID#
+           AND T.IF_NO = #IF_NO#
+           AND T.ID > #ID#
+    </select>
+    
 </sqlMap>

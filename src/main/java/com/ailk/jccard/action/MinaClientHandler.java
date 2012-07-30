@@ -26,7 +26,7 @@ public class MinaClientHandler extends JCClientHandler {
 
     private static Logger logger = LoggerFactory.getLogger(MinaClientHandler.class);
 
-    private final static String SQL_XML = "";
+    private final static String SQL_XML = "com/ailk/sql/jccard/JCClientSQL.xml";
     private static PDao dao = PDaoEngines.getDao(SQL_XML, "EcsStore");
 
     @Override
