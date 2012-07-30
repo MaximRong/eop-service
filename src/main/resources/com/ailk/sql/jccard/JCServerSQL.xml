@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="JCServerSQL">
+    <typeAlias alias="HashMap" type="java.util.HashMap"/>
+    
+    <select id="queryRspLs" parameterClass="HashMap" resultClass="HashMap">
+        SELECT T.RESP_CONTENT, T.SLEEP_TIME, T.RESP_IF_NO
+          FROM JCFACE_SUB T
+         WHERE T.IF_NO = #IF_NO#
+           AND T.STAFF_ID = #STAFF_ID#
+           AND T.ORDER_NO = #ORDER_NO#
+           AND T.JOB_TYPE = #JOB_TYPE#
+           AND T.STATE = '1'
+    </select>
+    
+    <select id="queryDefaultRspLs" parameterClass="HashMap" resultClass="HashMap">
+        SELECT T.RESP_CONTENT, T.SLEEP_TIME, T.RESP_IF_NO
+          FROM JCFACE_SUB T
+         WHERE T.IF_NO = #IF_NO#
+           AND T.ORDER_NO = #ORDER_NO#
+           AND T.JOB_TYPE = #JOB_TYPE#
+           AND T.DEFAULT_TAG = '1'
+    </select>
+    
+</sqlMap>

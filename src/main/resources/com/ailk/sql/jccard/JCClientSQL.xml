@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="JCClientSQL">
+    <typeAlias alias="HashMap" type="java.util.HashMap"/>
+    
+    <select id="getSeq" resultClass="HashMap">
+        SELECT TO_CHAR(SYSDATE,'yymmdd') || JC_RSP_SEQ.NEXTVAL AS "SEQ"
+          FROM DUAL
+    </select>
+    
+    <insert id="insertRspData" parameterClass="HashMap">
+        INSERT INTO JC_RSP_DATA (
+                ID,
+                SESSIONID,
+                <isNotNull property="RSPDATA">RSPDATA,</isNotNull>
+                STATE,
+                IF_NO,
+                <isNotNull property="RSP_RESULT">RSP_RESULT,</isNotNull>
+                <isNotNull property="CARD_PRODUCT_NAME">CARD_PRODUCT_NAME,</isNotNull>
+                <isNotNull property="USERFLAG">USERFLAG,</isNotNull>
+                UPDATE_TIME
+               )
+        VALUES (
+                #ID#,
+                #SESSIONID#,
+                <isNotNull property="RSPDATA">#RSPDATA#,</isNotNull>
+                '0',
+                #IF_NO#,
+                <isNotNull property="RSP_RESULT">#RSP_RESULT#,</isNotNull>
+                <isNotNull property="CARD_PRODUCT_NAME">#CARD_PRODUCT_NAME#,</isNotNull>
+                <isNotNull property="USERFLAG">#USERFLAG#,</isNotNull>
+                SYSDATE
+               )
+    </insert>
+    
+    <insert id="insertRspSubData" parameterClass="HashMap">
+        INSERT INTO JC_RSP_SUB_DATA (
+                ID,     NAME,   AID,    APPSIZE,    MAYOPERATE,     SUPPLIERNAME,   FEEDESC
+               )
+        VALUES (
+                #ID#,   #NAME#, #AID#,  #APPSIZE#,  #MAYOPERATE#,   #SUPPLIERNAME#, #FEEDESC#
+               )
+    </insert>
+    
+</sqlMap>
