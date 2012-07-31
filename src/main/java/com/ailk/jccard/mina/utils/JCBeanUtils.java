@@ -6,7 +6,7 @@ public class JCBeanUtils {
         String className = "";
         if (ifNo.equals("IF1")) {
             if (jobType == 1) {
-                className = "com.ailk.jccard.mina.bean.req.JCIF1Rsp01BodyBean";
+                className = "com.ailk.jccard.mina.bean.rsp.JCIF1Rsp01BodyBean";
             } else if (jobType == 2 || jobType == 3) {
                 className = "com.ailk.jccard.mina.bean.rsp.JCIF1Rsp02BodyBean";
             } else {

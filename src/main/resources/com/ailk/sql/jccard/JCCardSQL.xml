@@ -30,4 +30,19 @@
          FROM JC_RSP_SUB_DATA T
          WHERE T.ID = #id#
     </select>
+    
+    
+    <!-- 查询接口对应的url -->
+    <select id="queryJCFaceUrl" resultClass="String">
+        SELECT PARAMVALUE
+        FROM EOP_PARAM
+        WHERE PARAMCODE = 'jccard.face.url'
+    </select>
+    
+    <!-- 查询接口对应的port -->
+    <select id="queryJCFacePort" resultClass="int">
+        SELECT PARAMVALUE
+        FROM EOP_PARAM
+        WHERE PARAMCODE = 'jccard.face.port'
+    </select>
 </sqlMap>
