@@ -11,6 +11,8 @@ import org.phw.core.lang.Pair;
 import org.phw.eop.support.EopAction;
 import org.phw.ibatis.engine.PDao;
 import org.phw.ibatis.util.PDaoEngines;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ailk.jccard.action.validate.JCBaseValidator;
 import com.ailk.jccard.mina.MinaClient;
@@ -27,6 +29,7 @@ public abstract class JCCardCommonAction extends EopAction {
     protected static final String CARD_OPERATE_OVER = "1";
     protected static final String CARD_OPERATE_PROCESSING = "2";
     protected static final String CARD_OPERATE_FAIL = "0";
+    private static final Logger logger = LoggerFactory.getLogger(JCCardCommonAction.class);
 
     static {
         PDao dao = PDaoEngines.getDao("com/ailk/sql/jccard/JCCardSQL.xml", "EcsStore");
@@ -43,6 +46,7 @@ public abstract class JCCardCommonAction extends EopAction {
     @Override
     public Object doAction() {
         JSONObject reqObject = JSON.parseObject((String) getParams().get("reqBean"));
+        logger.info("请求的字符串是 : " + cobRsq.toString());
         JCBaseValidator validator = new JCBaseValidator();
         Pair<Boolean, String> validateResult = validator.validate(reqObject);
         if (!validateResult.getFirst()) {
@@ -50,19 +54,24 @@ public abstract class JCCardCommonAction extends EopAction {
             cobRsq.put("hasMsg", "false");
             cobRsq.put("result", CARD_OPERATE_FAIL);
             cobRsq.put("validMsg", validateResult.getSecond());
+            logger.info("返回异常信息为 : " + cobRsq.toString());
+            return Collections.asMap("jcCardCobRsq", cobRsq);
         }
         subActionProcess();
+        logger.info("返回信息为 : " + cobRsq.toString());
         return Collections.asMap("jcCardCobRsq", cobRsq);
     }
 
     protected abstract void subActionProcess();
 
     protected void createJCBean(JSONObject reqObject) {
+        PDao dao = newDao();
         // 拼装headBean
-        String sessionID = reqObject.getString("sessionID");
+        String sessionID = dao.selectString("JCCardSQL.querySessionID", null);
         String businessType = reqObject.getString("businessType");
         headBean = new JCHeadBean();
         headBean.setSessionId(sessionID);
+        reqObject.put("sessionID", sessionID);
         headBean.setTypeFlag(Byte.decode(businessType));
         // 拼装if1ReqBean
         if1ReqBean = new JCIF1ReqBodyBean();
@@ -102,6 +111,7 @@ public abstract class JCCardCommonAction extends EopAction {
      */
     protected List<HashMap> queryCallbackInfo(JSONObject jsonObject, PDao dao) {
         String sessionID = jsonObject.getString("sessionID");
+        cobRsq.put("sessionID", sessionID);
         List<HashMap> query = dao.select("JCCardSQL.queryRsqData", sessionID);
         return query;
     }
@@ -114,12 +124,15 @@ public abstract class JCCardCommonAction extends EopAction {
         cobRsq.put("hasMsg", true);
         cobRsq.put("result", CARD_OPERATE_PROCESSING); // 放入是否处理完成
         ArrayList<Map> if3Beans = new ArrayList<Map>();
+        ArrayList<String> ids = new ArrayList<String>();
         for (HashMap q : query) {
             processEveryCallBackInfo(dao, if3Beans, q);
+            ids.add(MapUtils.getString(q, "ID"));
         }
         if (!Collections.isEmpty(if3Beans)) {
             cobRsq.put("if3Beans", if3Beans);
         }
+        dao.update("JCCardSQL.updateRsqStateSynchronized", Collections.asMap("ids", ids));
     }
 
     /**

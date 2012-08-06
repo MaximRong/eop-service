@@ -33,7 +33,6 @@ public class JCCardInTimeAction extends JCCardCommonAction {
         createJCBean(reqObject);
         startMinaClient();
         queryDataFormDB(reqObject);
-
     }
 
 }

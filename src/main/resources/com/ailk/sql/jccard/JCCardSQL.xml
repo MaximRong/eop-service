@@ -12,12 +12,28 @@
                T.IF_NO,
                T.RSP_RESULT,
                T.CARD_PRODUCT_NAME,
-               T.USERFLAG
+               T.USERFLAG,
+               T.SESSIONID
         FROM JC_RSP_DATA t
         WHERE T.SESSIONID = #sessionID#
         AND T.STATE = '0'
         ORDER BY T.UPDATE_TIME
-    </select>    
+    </select> 
+    
+    <!-- 修改消息状态：变为已同步 -->
+    <update id="updateRsqStateSynchronized" parameterClass="HashMap">
+        UPDATE JC_RSP_DATA T
+        SET T.STATE = '1'
+        WHERE 1 = 1
+        <iterate property="ids" open="AND T.ID IN(" close=")" conjunction=",">
+                #ids[]#
+        </iterate>
+    </update>   
+    
+    <!-- 查询流水号(sessionID) -->
+    <select id="querySessionID" resultClass="String">
+        SELECT TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS') || LPAD(JC_SESSION_SEQ.NEXTVAL, 6, '0')  FROM DUAL
+    </select>
     
     <!-- 查询if1接口返回的信息 -->
     <select id="queryIF1RsqData" parameterClass="String" resultClass="HashMap">

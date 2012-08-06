@@ -21,7 +21,7 @@ public class JCBaseValidator implements JCValidator {
             return cardInfoValidate;
         }
 
-        if (ArrayUtils.contains(VALIDATE_AID_MISSIONTYPE, reqObject.getShort("missionType"))) {
+        if (ArrayUtils.contains(VALIDATE_AID_MISSIONTYPE, reqObject.getString("missionType"))) {
             String reqData = reqObject.getString("reqData");
             if (StringUtils.isEmpty(reqData)) {
                 return Pair.makePair(false, "reqData不可为空!");
@@ -82,10 +82,10 @@ public class JCBaseValidator implements JCValidator {
         }
         String imsi = reqObject.getString("imsi");
         if (!imsi.startsWith("46")) {
-            return Pair.makePair(false, "iccid必须以46开头!");
+            return Pair.makePair(false, "imsi必须以46开头!");
         }
         if (8 != imsi.length()) {
-            return Pair.makePair(false, "iccid必须8位!");
+            return Pair.makePair(false, "imsi必须8位!");
         }
         String missionType = reqObject.getString("missionType");
         if (StringUtils.isEmpty(missionType)) {
