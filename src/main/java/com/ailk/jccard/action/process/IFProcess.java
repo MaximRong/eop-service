@@ -33,7 +33,7 @@ public abstract class IFProcess {
         insertParam.putAll((Map) insertInfo.get("insertParam"));
         List<Map> insertAppList = (List<Map>) insertInfo.get("insertAppList");
         insertRequestToDB(insertParam, insertAppList);
-        Map responseInfo = queryResponseFromDB(insertParam);
+        Map responseInfo = ifNo.equals("IF3") ? Collections.asMap("RSP_RESULT", 0) : queryResponseFromDB(insertParam);
         JCHeadBean rspHead = ResponseUtils.generateEssHeadBean(ifNo, sessionInfo);
 
         return ResponseUtils.generateResponse(rspHead, getResponseInfo(responseInfo));
