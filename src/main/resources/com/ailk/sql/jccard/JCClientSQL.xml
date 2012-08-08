@@ -20,7 +20,8 @@
                 <isNotNull property="RSP_RESULT">RSP_RESULT,</isNotNull>
                 <isNotNull property="CARD_PRODUCT_NAME">CARD_PRODUCT_NAME,</isNotNull>
                 <isNotNull property="USERFLAG">USERFLAG,</isNotNull>
-                UPDATE_TIME
+                UPDATE_TIME,
+                RSP_TYPE
                )
         VALUES (
                 #ID#,
@@ -31,7 +32,8 @@
                 <isNotNull property="RSP_RESULT">#RSP_RESULT#,</isNotNull>
                 <isNotNull property="CARD_PRODUCT_NAME">#CARD_PRODUCT_NAME#,</isNotNull>
                 <isNotNull property="USERFLAG">#USERFLAG#,</isNotNull>
-                SYSDATE
+                SYSDATE,
+                '1'
                )
     </insert>
     
