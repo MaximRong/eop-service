@@ -17,6 +17,7 @@
         FROM JC_RSP_DATA t
         WHERE T.SESSIONID = #sessionID#
         AND T.STATE = '0'
+        AND T.RSP_TYPE = '1'
         ORDER BY T.UPDATE_TIME
     </select> 
     
