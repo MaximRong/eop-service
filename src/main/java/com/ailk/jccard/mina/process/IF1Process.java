@@ -1,4 +1,4 @@
-package com.ailk.jccard.action.process;
+package com.ailk.jccard.mina.process;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +11,7 @@ import com.ailk.jccard.mina.bean.AppItemBean;
 import com.ailk.jccard.mina.bean.rsp.JCIF1Rsp01BodyBean;
 import com.ailk.jccard.mina.bean.rsp.JCIF1Rsp02BodyBean;
 import com.ailk.jccard.mina.bean.rsp.JCIF1Rsp04BodyBean;
-import com.ailk.jccard.mina.utils.SessionInfo;
-import com.ailk.phw.fromBytes.ObjectFromBytes;
+import com.ailk.phw.frombytes.ObjectFromBytes;
 
 public class IF1Process extends IFProcess {
 
@@ -27,40 +26,30 @@ public class IF1Process extends IFProcess {
     }
 
     @Override
-    public Map getRequestInfo(ObjectFromBytes objectFromBytes, byte[] bytes) {
+    public Map getResponseInfo(ObjectFromBytes objectFromBytes, byte[] bytes) {
         if (jobType == 1) {
             JCIF1Rsp01BodyBean body = objectFromBytes.fromBytes(bytes, JCIF1Rsp01BodyBean.class);
             Map insertParam = Collections.asMap("RSP_RESULT", body.getResultCode(),
-                    "CARD_PRODUCT_NAME", body.getMerchantName(),
-                    "USERFLAG", body.getUserFlag());
+                    "CARD_PRODUCT_NAME", body.getMerchantName(), "USERFLAG", body.getUserFlag());
             List<Map> insertAppList = fetchAppList(id, body.getApps());
+
             return Collections.asMap("insertParam", insertParam, "insertAppList", insertAppList);
         } else if (jobType == 2 || jobType == 3) {
             JCIF1Rsp02BodyBean body = objectFromBytes.fromBytes(bytes, JCIF1Rsp02BodyBean.class);
             Map insertParam = Collections.asMap("RSP_RESULT", body.getResultCode());
             List<Map> insertAppList = fetchAppList(id, body.getApps());
+
             return Collections.asMap("insertParam", insertParam, "insertAppList", insertAppList);
         } else {
             JCIF1Rsp04BodyBean body = objectFromBytes.fromBytes(bytes, JCIF1Rsp04BodyBean.class);
             Map insertParam = Collections.asMap("RSP_RESULT", body.getResultCode());
+
             return Collections.asMap("insertParam", insertParam);
         }
     }
 
     @Override
-    public byte[] process(ObjectFromBytes objectFromByte, byte[] bytes, Map insertParam,
-            SessionInfo sessionInfo) {
-        Map insertInfo = getRequestInfo(objectFromByte, bytes);
-
-        insertParam.putAll((Map) insertInfo.get("insertParam"));
-        List<Map> insertAppList = (List<Map>) insertInfo.get("insertAppList");
-        insertRequestToDB(insertParam, insertAppList);
-
-        return null;
-    }
-
-    @Override
-    public Object getResponseInfo(Map responseInfo) {
+    public Object getRequestInfo(Map responseInfo) {
         return null;
     }
 

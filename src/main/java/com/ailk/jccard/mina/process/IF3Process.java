@@ -1,4 +1,4 @@
-package com.ailk.jccard.action.process;
+package com.ailk.jccard.mina.process;
 
 import java.util.Map;
 
@@ -7,7 +7,7 @@ import org.phw.ibatis.engine.PDao;
 
 import com.ailk.jccard.mina.bean.req.JCIF3ReqBodyBean;
 import com.ailk.jccard.mina.bean.rsp.JCIF3RspBodyBean;
-import com.ailk.phw.fromBytes.ObjectFromBytes;
+import com.ailk.phw.frombytes.ObjectFromBytes;
 import com.ailk.phw.utils.ObjectUtils;
 
 public class IF3Process extends IFProcess {
@@ -17,16 +17,19 @@ public class IF3Process extends IFProcess {
     }
 
     @Override
-    public Map getRequestInfo(ObjectFromBytes objectFromBytes, byte[] bytes) {
+    public Map getResponseInfo(ObjectFromBytes objectFromBytes, byte[] bytes) {
         JCIF3ReqBodyBean body = objectFromBytes.fromBytes(bytes, JCIF3ReqBodyBean.class);
         return Collections.asMap("insertParam", Collections.asMap("RSPDATA", body.getData()));
     }
 
     @Override
-    public Object getResponseInfo(Map responseInfo) {
-        JCIF3RspBodyBean rspBody = ObjectUtils.populateBean(Collections.asMap(
-                "resultCode", responseInfo.get("RSP_RESULT")), JCIF3RspBodyBean.class);
-        return rspBody;
+    public Object getRequestInfo(Map responseInfo) {
+        return ObjectUtils.populateBean(Collections.asMap("resultCode", 0), JCIF3RspBodyBean.class);
+    }
+
+    @Override
+    protected Map queryRequestInfo(Map insertParam) {
+        return null;
     }
 
 }

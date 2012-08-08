@@ -15,10 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ailk.jccard.action.validate.JCBaseValidator;
-import com.ailk.jccard.mina.MinaClient;
-import com.ailk.jccard.mina.MinaClientConfig;
 import com.ailk.jccard.mina.bean.JCHeadBean;
 import com.ailk.jccard.mina.bean.req.JCIF1ReqBodyBean;
+import com.ailk.jccard.mina.client.MinaClient;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
@@ -94,9 +93,9 @@ public abstract class JCCardCommonAction extends EopAction {
     }
 
     protected void startMinaClient() {
-        MinaClientConfig.setServerAddress(JCCARD_FACE_URL);
-        MinaClientConfig.setServerPort(JCCARD_FACE_PORT);
-        MinaClient.startClient(headBean, if1ReqBean);
+        MinaClient client = new MinaClient(JCCARD_FACE_URL, JCCARD_FACE_PORT);
+        client.sendMessage(headBean, if1ReqBean);
+        client.awaitClose();
     }
 
     protected PDao newDao() {
@@ -105,6 +104,7 @@ public abstract class JCCardCommonAction extends EopAction {
 
     /**
      * 查询返回消息
+     * 
      * @param jsonObject
      * @param dao
      * @return
@@ -136,7 +136,8 @@ public abstract class JCCardCommonAction extends EopAction {
     }
 
     /**
-     * 处理每一条返回消息. 
+     * 处理每一条返回消息.
+     * 
      * @param dao
      * @param if3Beans
      * @param q
@@ -152,6 +153,7 @@ public abstract class JCCardCommonAction extends EopAction {
 
     /**
      * 处理IF1 对应的返回信息
+     * 
      * @param dao
      * @param q
      */
@@ -169,6 +171,7 @@ public abstract class JCCardCommonAction extends EopAction {
 
     /**
      * 处理返回消息
+     * 
      * @param if3Beans
      * @param q
      * @param ifNo

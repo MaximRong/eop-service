@@ -4,13 +4,12 @@ import java.util.List;
 
 import com.ailk.jccard.mina.bean.AppItemBean;
 import com.ailk.phw.annotations.JCBytes;
-import com.ailk.phw.enums.JCLenType;
 
 public class JCIF1Rsp02BodyBean {
 
     private short resultCode;
 
-    @JCBytes(lenType = JCLenType.Short)
+    @JCBytes(lenBytes = 2)
     private List<AppItemBean> apps;
 
     public void setResultCode(short resultCode) {

@@ -1,5 +1,10 @@
 package com.ailk.jccard.mina.utils;
 
+import org.apache.mina.core.buffer.IoBuffer;
+
+import com.ailk.phw.utils.ConstantUtils;
+import com.ailk.phw.utils.JCConvertUtils;
+
 public class SessionInfo {
 
     private String ifNo;
@@ -12,8 +17,25 @@ public class SessionInfo {
 
     private int orderNo;
 
+    private byte[] messageBuffer;
+
     public SessionInfo() {
         orderNo = 0;
+        messageBuffer = new byte[0];
+    }
+
+    public void pushMessage(Object message) {
+        messageBuffer = JCHandlerUtils.addBufferToBytes(messageBuffer, (IoBuffer) message);
+    }
+
+    public byte[] popMessage() {
+        byte[] result = JCHandlerUtils.fetchBytesFromBuffer(messageBuffer);
+        if (result == null) {
+            return null;
+        }
+        messageBuffer = JCConvertUtils.subBytes(messageBuffer,
+                ConstantUtils.PrimitiveOffset.SHORT_OFFSET + result.length);
+        return result;
     }
 
     public void incrementOrderNo() {

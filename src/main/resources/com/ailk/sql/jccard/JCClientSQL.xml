@@ -51,7 +51,8 @@
           FROM JC_RSP_DATA T
          WHERE T.SESSIONID = #SESSIONID#
            AND T.IF_NO = #IF_NO#
-           AND T.ID > #ID#
+           AND T.STATE = '0'
+           AND T.RSP_TYPE = '0'
     </select>
     
 </sqlMap>

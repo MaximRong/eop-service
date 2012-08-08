@@ -1,41 +1,51 @@
 package com.ailk.jccard.mina.iface;
 
-import java.util.Map;
-
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
 
-import com.ailk.jccard.mina.utils.RequestUtils;
+import com.ailk.jccard.mina.utils.JCHandlerUtils;
 import com.ailk.jccard.mina.utils.SessionInfo;
-import com.ailk.mall.base.utils.StringUtils;
 
 public abstract class JCClientHandler extends JCHandler {
 
-    public abstract byte[] messageRequest(IoSession session, Object message) throws Exception;
+    public abstract byte[] messageRequest(SessionInfo sessionInfo, byte[] message) throws Exception;
+
+    private byte[] requestBuffer = new byte[0];
 
     @Override
     public void messageReceived(IoSession session, Object message) throws Exception {
-        incrementSessionOrderNo(session);
+        SessionInfo sessionInfo = getSessionInfo(session);
 
-        byte[] bytes = messageRequest(session, message);
-        if (ArrayUtils.isEmpty(bytes)) {
-            session.close(true);
-            return;
+        sessionInfo.pushMessage(message);
+        byte[] msg = sessionInfo.popMessage();
+
+        while (msg != null) {
+            incrementSessionOrderNo(session);
+            if (msg.length == 0) {
+                session.close(true);
+                return;
+            }
+
+            byte[] bytes = messageRequest(sessionInfo, msg);
+            if (ArrayUtils.isEmpty(bytes)) {
+                session.close(true);
+                return;
+            }
+            session.write(IoBuffer.wrap(bytes));
+            msg = sessionInfo.popMessage();
         }
-
-        session.write(IoBuffer.wrap(bytes));
     }
 
     @Override
     public void messageSent(IoSession session, Object message) throws Exception {
         if (getSessionOrderNo(session) == 0) {
-            Map reqInfo = RequestUtils.parseClientRequestInfo(((IoBuffer) message).array());
-            SessionInfo sessionInfo = getSessionInfo(session);
-            sessionInfo.setIfNo(StringUtils.toString(reqInfo.get("IF_NO")));
-            sessionInfo.setSessionId(StringUtils.toString(reqInfo.get("SESSION_ID")));
-            sessionInfo.setStaffId(StringUtils.toString(reqInfo.get("STAFF_ID")));
-            sessionInfo.setJobType(Integer.valueOf(StringUtils.toString(reqInfo.get("JOB_TYPE"))));
+            requestBuffer = JCHandlerUtils.addBufferToBytes(requestBuffer, (IoBuffer) message);
+            byte[] bytes = JCHandlerUtils.fetchBytesFromBuffer(requestBuffer);
+            if (ArrayUtils.isNotEmpty(bytes)) {
+                SessionInfo sessionInfo = getSessionInfo(session);
+                JCHandlerUtils.parseClientRequest(bytes, sessionInfo);
+            }
         }
     }
 
