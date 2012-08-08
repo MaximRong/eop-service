@@ -19,7 +19,7 @@ import com.ailk.phw.frombytes.ObjectFromBytes;
 
 public class MinaClientHandler extends JCClientHandler {
 
-    private final static String SQL_XML = "com/ailk/mina/JCClientSQL.xml";
+    private final static String SQL_XML = "com/ailk/sql/jccard/JCClientSQL.xml";
     private static PDao dao = PDaoEngines.getDao(SQL_XML, "EcsStore");
 
     @Override

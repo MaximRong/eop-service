@@ -46,13 +46,20 @@
                )
     </insert>
     
-    <select id="queryResponseInfo" parameterClass="HashMap" resultClass="HashMap">
-        SELECT T.RSPDATA, T.RSP_RESULT
+    <select id="queryRequestInfo" parameterClass="HashMap" resultClass="HashMap">
+        SELECT T.ID, T.RSPDATA, T.RSP_RESULT
           FROM JC_RSP_DATA T
          WHERE T.SESSIONID = #SESSIONID#
            AND T.IF_NO = #IF_NO#
            AND T.STATE = '0'
            AND T.RSP_TYPE = '0'
+           AND ROWNUM = 1
     </select>
+    
+    <update id="updateRequestInfoState" parameterClass="HashMap">
+        UPDATE JC_RSP_DATA T
+           SET T.STATE = '1'
+         WHERE T.ID = #ID#
+    </update>
     
 </sqlMap>
