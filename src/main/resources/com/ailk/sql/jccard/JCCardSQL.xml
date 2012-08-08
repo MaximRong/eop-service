@@ -17,6 +17,7 @@
         FROM JC_RSP_DATA t
         WHERE T.SESSIONID = #sessionID#
         AND T.STATE = '0'
+        AND T.RSP_TYPE = '1'
         ORDER BY T.UPDATE_TIME
     </select> 
     
@@ -34,6 +35,18 @@
     <select id="querySessionID" resultClass="String">
         SELECT TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS') || LPAD(JC_SESSION_SEQ.NEXTVAL, 6, '0')  FROM DUAL
     </select>
+    
+    <!-- 插入ESS返回消息 -->
+    <insert id="insertEssBackMsg" parameterClass="HashMap">
+        INSERT INTO JC_RSP_DATA
+        (ID,    SESSIONID,   RSPDATA,     STATE,
+         IF_NO, RSP_RESULT,   CARD_PRODUCT_NAME,  USERFLAG,   
+         UPDATE_TIME, RSP_TYPE)
+         VALUES
+        (TO_CHAR(SYSDATE, 'YYMMDD') || JC_RSP_SEQ.NEXTVAL, #SESSIONID#,   #RSPDATA#,    '0',
+         'IF2', #RSP_RESULT#,       null,           null,
+         SYSDATE,       '0')
+    </insert>
     
     <!-- 查询if1接口返回的信息 -->
     <select id="queryIF1RsqData" parameterClass="String" resultClass="HashMap">
