@@ -29,7 +29,7 @@
         <iterate property="ids" open="AND T.ID IN(" close=")" conjunction=",">
                 #ids[]#
         </iterate>
-    </update>   
+    </update>
     
     <!-- 查询流水号(sessionID) -->
     <select id="querySessionID" resultClass="String">
